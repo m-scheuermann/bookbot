@@ -1,15 +1,20 @@
 def main():
-    book_path = "books/frankenstein.txt"
+    document = choose_document()
+    book_path = f"books/{document}"
     text = get_book_text(book_path)
     number_of_words = count_words(text)
+    
     print(f"--- Begin report of {book_path} ---")
     print(f"This document has {number_of_words} words.")
     print()
+    
     number_of_characters = count_characters(text)
     characters_as_list = dict_to_list(number_of_characters)
-    characters_as_list.sort(reverse=True, key=sort_on)
+    characters_as_list.sort(reverse=True, key=sort_on)  
+    
     for character in characters_as_list:
         print(f"The '{character["character"]}' character was found {character["amount"]} times")
+    
     print("--- End report ---")
 
 
@@ -43,5 +48,14 @@ def dict_to_list(dict):
 def sort_on(dict):
     return dict["amount"]
 
+
+def choose_document():
+    while True:    
+        document = input("Please type in the name of the document you want to analyze: ")
+        try:
+            with open(f"books/{document}") as f:    # Try opening the file
+                return document                     # If successful, return the document name
+        except:
+            print("The document does not exist. Please try again.")
 
 main()
